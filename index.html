@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <title>Select</title>
+        <script src="http://fb.me/react-0.13.1.js"></script>
+        <script src="http://fb.me/JSXTransformer-0.13.1.js"></script>
+        <script type="text/jsx" src="dropdown.jsx"></script>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    </head>
+    <body style="margin-top:15px;margin-left:15px">
+
+        <form style="width:300px">
+            <div className='form-group'>
+                <div id="example1"></div>
+            </div>
+            <a id="showvalue1">CLICK TO SHOW SELECTED VALUE</a>
+        </form>
+
+        <script>
+            var options = [
+                {
+                    text: 'This is option A',
+                    code: 'a'
+                },
+                {
+                    text: 'This is option B',
+                    code: 'b'
+                },
+                {
+                    text: 'This is option C',
+                    code: 'c'
+                },
+                {
+                    text: 'This is option D',
+                    code: 'd'
+                }
+            ];
+
+            var a = document.getElementById("showvalue1");
+            var select;
+
+            var dropDownOnChange = function(change) {
+                alert('onChange:\noldValue: ' + change.oldValue + '\nnewValue: ' + change.newValue);
+            };
+
+            a.onclick = function() {
+                select = document.getElementById("myDropdown");
+                alert(select.options[select.selectedIndex].value);
+            }
+        </script>
+
+        <script type="text/jsx">
+            React.render(
+                <Dropdown id='myDropdown'
+                          options={options}
+                          value='b'
+                          labelField='text'
+                          valueField='code'
+                          onChange={dropDownOnChange}/>,
+                document.getElementById('example1')
+            );
+        </script>
+
+    </body>
+</html>
