@@ -3,7 +3,12 @@ var Dropdown = React.createClass({
     propTypes: {
         id: React.PropTypes.string.isRequired,
         options: React.PropTypes.array.isRequired,
-        value: React.PropTypes.string,
+        value: React.PropTypes.oneOfType(
+            [
+                React.PropTypes.number,
+                React.PropTypes.string
+            ]
+        ),
         valueField: React.PropTypes.string,
         labelField: React.PropTypes.string,
         onChange: React.PropTypes.func
@@ -19,15 +24,27 @@ var Dropdown = React.createClass({
     },
 
     getInitialState: function() {
-        var selected;
-        if (this.props.value === null && this.props.options.length !== 0) {
-            selected = this.props.options[0][this.props.valueField];
-        } else {
-            selected = this.props.value;
-        }
+        var selected = this.getSelectedFromProps(this.props);
         return {
             selected: selected
         }
+    },
+    
+    componentWillReceiveProps: function(nextProps) {
+        var selected = this.getSelectedFromProps(nextProps);
+        this.setState({
+           selected: selected
+        });
+    },
+    
+    getSelectedFromProps(props) {
+        var selected;
+        if (props.value === null && props.options.length !== 0) {
+            selected = props.options[0][props.valueField];
+        } else {
+            selected = props.value;
+        }
+        return selected;
     },
 
     render: function() {
@@ -40,9 +57,9 @@ var Dropdown = React.createClass({
             )
         });
         return (
-            <select id={this.props.id}
-                    className='form-control'
-                    value={this.state.selected}
+            <select id={this.props.id} 
+                    className='form-control' 
+                    value={this.state.selected} 
                     onChange={this.handleChange}>
                 {options}
             </select>
